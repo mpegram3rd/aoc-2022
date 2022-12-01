@@ -14,7 +14,7 @@ func main() {
 	filePath := os.Args[1]                   // read file path from commandline
 	howMany, err := strconv.Atoi(os.Args[2]) // how many of the  top elves to tally
 	if err != nil {
-		log.Fatalf("Failed to parse the howMany parameter to a number\n", err)
+		log.Fatalf("Error parsing howMany parameter: %s\n", err)
 	}
 
 	// open file and check for errors
@@ -39,7 +39,7 @@ func main() {
 		if len(line) > 0 {
 			calories, err := strconv.Atoi(line)
 			if err != nil {
-				log.Fatal("Error parsing line %s: %s\n", line, err)
+				log.Fatalf("Error parsing line %s: %s\n", line, err)
 			}
 			elf.AddCalories(calories)
 		} else {
