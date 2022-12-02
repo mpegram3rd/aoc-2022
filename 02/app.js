@@ -5,7 +5,6 @@ const accumulator = {score: 0};
 lineReader.process('input.txt', calc1.calculator, accumulator)
     .then(() =>  {
         console.log(`Your score is ${accumulator.score}`);
-        console.log('Finished');
     })
     .catch((err) => {
         console.error(err);
