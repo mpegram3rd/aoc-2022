@@ -17,6 +17,7 @@ module.exports = (function() {
 
     this.rpsMap = ['Rock', 'Paper', 'Scissors'];
 
+
     // Maps and normalizes the play
     this.normalize = function normalize(play, map) {
         const index = map.indexOf(play);

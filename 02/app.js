@@ -1,8 +1,8 @@
 const lineReader = require('./linereader');
-const calc1 = require('./calc1');
+const calc = require('./calc2');  // calc1 / calc2
 
 const accumulator = {score: 0};
-lineReader.process('input.txt', calc1.calculator, accumulator)
+lineReader.process('input.txt', calc.calculator, accumulator)
     .then(() =>  {
         console.log(`Your score is ${accumulator.score}`);
     })

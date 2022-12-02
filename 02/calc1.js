@@ -1,6 +1,6 @@
-const mapping = require('./datamapping');
-
 module.exports = (function() {
+    const mapping = require('./datamapping');
+
     // Lambda for performing calculations on each line processed
     this.calculator = (line, accumulator) => {
         const plays = line.split(' ');
