@@ -5,6 +5,13 @@ import java.util.*;
 
 /**
  * Advent of Code 2022 - Day 3, Solution 1
+ * Basic problem:
+ * - Each line is items in a rucksack
+ * - Split each line into 2 halves (representing 2 equal sized compartments)
+ * - Identify any duplicate lines between the two compartments
+ * - See score() function for details on how duplicates are tallied.
+ *
+ * @author Macon Pegram
  */
 public class Solution1 {
 
