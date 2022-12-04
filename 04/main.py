@@ -1,5 +1,6 @@
 import re
 
+
 def parse(line):
     values = list(map(int, re.split(',|-', line)))
     set1 = set(range(values[0], values[1]))
