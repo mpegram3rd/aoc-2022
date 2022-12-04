@@ -3,8 +3,8 @@ import re
 
 def parse(line):
     values = list(map(int, re.split(',|-', line)))
-    set1 = set(range(values[0], values[1]))
-    set2 = set(range(values[2], values[3]))
+    set1 = set(range(values[0], values[1] + 1))  # +1 to make end of range inclusive
+    set2 = set(range(values[2], values[3] + 1))  # +1 to make end of range inclusive
     return [set1, set2]
 
 
