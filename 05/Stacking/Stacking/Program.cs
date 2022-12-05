@@ -57,10 +57,10 @@ namespace Stacking
         static void InitStacks(StreamReader garbIn, Stack<char>[] stacks)
         {
             var line = garbIn.ReadLine();
-            // Exit condition.. we keep processing until we find a line that doesn't start with '['
+            // Exit condition.. we keep processing until we find a line that doesn't contain a '['
             if (line!.Contains('['))
             {
-                // Call recursively again if we didn't find a line that starts with '['
+                // Call recursively again if we didn't find a line that contains a  '['
                 InitStacks(garbIn, stacks);
                 
                 // POST processing (after recursive calls) means we're processing the last line we found 
