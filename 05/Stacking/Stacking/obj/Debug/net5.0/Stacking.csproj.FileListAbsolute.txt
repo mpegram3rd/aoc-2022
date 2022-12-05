@@ -1,0 +1,17 @@
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\bin\Debug\net5.0\Stacking.exe
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\bin\Debug\net5.0\Stacking.deps.json
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\bin\Debug\net5.0\Stacking.runtimeconfig.json
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\bin\Debug\net5.0\Stacking.runtimeconfig.dev.json
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\bin\Debug\net5.0\Stacking.dll
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\bin\Debug\net5.0\ref\Stacking.dll
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\bin\Debug\net5.0\Stacking.pdb
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\Stacking.csprojAssemblyReference.cache
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\Stacking.GeneratedMSBuildEditorConfig.editorconfig
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\Stacking.AssemblyInfoInputs.cache
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\Stacking.AssemblyInfo.cs
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\Stacking.csproj.CoreCompileInputs.cache
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\Stacking.dll
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\ref\Stacking.dll
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\Stacking.pdb
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\obj\Debug\net5.0\Stacking.genruntimeconfig.cache
+D:\Development\aoc\aoc-2022\05\Stacking\Stacking\bin\Debug\net5.0\input.txt
