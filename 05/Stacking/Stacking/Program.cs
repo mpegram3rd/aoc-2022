@@ -8,8 +8,16 @@ namespace Stacking
     class Program
     {
         private static readonly Regex rx = new Regex(@"\d+", RegexOptions.Compiled);
+        
+        // Use delegates (as Lambdas) to support different strategies for how the mover moves crates.
+        private  delegate void CrateMover(int howMany, int from, int to, Stack<char>[] stacks);
 
         static void Main(string[] args)
+        {
+            RunSolution(1, CrateMover9000);
+        }
+
+        static void RunSolution(int problemNum, CrateMover crateMover)
         {
             var garbIn = new StreamReader(new FileStream(@"input.txt", FileMode.Open, FileAccess.Read));
             
@@ -24,19 +32,31 @@ namespace Stacking
             
             do
             {
-                ProcessMove(line, stacks);
+                ProcessMove(line, stacks, crateMover);
             } while ((line = garbIn.ReadLine()) != null);
 
-            Console.Write("Problem 1: Top of Each Stack = ");
+            Console.Write("Problem " + problemNum + ": Top of Each Stack = ");
             foreach (var stack in stacks)
             {
                 Console.Write(stack.Count > 0 ? stack.Peek(): " ");
             }
             Console.WriteLine();
+            garbIn.Close();
+
 
         }
 
-        static void ProcessMove(string line, Stack<char>[] stacks)
+        // CrateMover9000 can only move 1 crate at a time
+        static void CrateMover9000(int howMany, int from, int to, Stack<char>[] stacks)
+        {
+            for (var count = 0; count < howMany; count++)
+            {
+                var item = stacks[from].Pop();
+                stacks[to].Push(item);
+            }
+
+        }
+        static void ProcessMove(string line, Stack<char>[] stacks, CrateMover crateMover)
         {
             MatchCollection nums = rx.Matches(line);
             if (nums.Count == 3)
@@ -44,11 +64,7 @@ namespace Stacking
                 var howMany = Int32.Parse(nums[0].Value);
                 var from = Int32.Parse(nums[1].Value) - 1; // offset by 1 for 0 indexed array
                 var to = Int32.Parse(nums[2].Value) - 1; // offset by 1 for 0 indexed array
-                for (var count = 0; count < howMany; count++)
-                {
-                    var item = stacks[from].Pop();
-                    stacks[to].Push(item);
-                }
+                crateMover(howMany, from, to, stacks);
             }
         }
         
