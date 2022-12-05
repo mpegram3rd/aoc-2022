@@ -15,6 +15,7 @@ namespace Stacking
         static void Main(string[] args)
         {
             RunSolution(1, CrateMover9000);
+            RunSolution(2, CrateMover9001);
         }
 
         static void RunSolution(int problemNum, CrateMover crateMover)
@@ -42,8 +43,6 @@ namespace Stacking
             }
             Console.WriteLine();
             garbIn.Close();
-
-
         }
 
         // CrateMover9000 can only move 1 crate at a time
@@ -56,6 +55,23 @@ namespace Stacking
             }
 
         }
+        
+        // CrateMover9001 can move whole stacks at once. 
+        static void CrateMover9001(int howMany, int from, int to, Stack<char>[] stacks)
+        {
+            var tmpStack = new Stack<char>();
+            
+            for (var count = 0; count < howMany; count++)
+            {
+                tmpStack.Push(stacks[from].Pop());
+            }
+
+            while (tmpStack.Count > 0)
+            {
+                stacks[to].Push(tmpStack.Pop());
+            }
+        }
+
         static void ProcessMove(string line, Stack<char>[] stacks, CrateMover crateMover)
         {
             MatchCollection nums = rx.Matches(line);
