@@ -46,7 +46,8 @@ namespace Stacking
             garbIn.Close();
         }
 
-        // CrateMover9000 can only move 1 crate at a time
+        // CrateMover9000 can only move 1 crate at a time.
+        // This causes items to be stacked up in the inverted order in which they were removed. 
         private static void CrateMover9000(int howMany, int from, int to, Stack<char>[] stacks)
         {
             for (var count = 0; count < howMany; count++)
@@ -57,20 +58,25 @@ namespace Stacking
 
         }
         
-        // CrateMover9001 can move whole stacks at once. 
+        // CrateMover9001 can move whole stacks at once so stack items stay in order
+        // We use recursion to handle this.  The process looks like this:
+        // - We pop things off the stack from top to bottom one at a time
+        // - Check to see if we've popped the right number (recursive exit condition)
+        // - Then we push each onto the new stack as we unwind the recursion. 
         private static void CrateMover9001(int howMany, int from, int to, Stack<char>[] stacks)
         {
-            var tmpStack = new Stack<char>();
-            
-            for (var count = 0; count < howMany; count++)
+            // Keep recursing here until there's no more crates to pickup (exit condition)
+            if (howMany > 0)
             {
-                // Just a cheat here.. pushes on a temporary stack so we can re-pop in the right oder. 
-                tmpStack.Push(stacks[from].Pop());
-            }
-
-            while (tmpStack.Count > 0)
-            {
-                stacks[to].Push(tmpStack.Pop());
+                // Pre-condition... Pull a crate off the top of the stack (and hang on to it)
+                var item = stacks[from].Pop();
+                
+                // Call recursively
+                CrateMover9001(howMany - 1, from, to, stacks);
+                
+                // Post-condition (as we unwind) push the item onto the target stack. 
+                // (builds from the bottom up)
+                stacks[to].Push(item);
             }
         }
 
