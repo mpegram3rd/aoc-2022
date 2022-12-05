@@ -7,18 +7,19 @@ namespace Stacking
 {
     class Program
     {
-        private static readonly Regex rx = new Regex(@"\d+", RegexOptions.Compiled);
+        private static readonly Regex Rx = new Regex(@"\d+", RegexOptions.Compiled);
         
         // Use delegates (as Lambdas) to support different strategies for how the mover moves crates.
         private  delegate void CrateMover(int howMany, int from, int to, Stack<char>[] stacks);
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             RunSolution(1, CrateMover9000);
             RunSolution(2, CrateMover9001);
         }
 
-        static void RunSolution(int problemNum, CrateMover crateMover)
+        // Going to be lazy here and just let it full parse/process each time. 
+        private static void RunSolution(int problemNum, CrateMover crateMover)
         {
             var garbIn = new StreamReader(new FileStream(@"input.txt", FileMode.Open, FileAccess.Read));
             
@@ -46,7 +47,7 @@ namespace Stacking
         }
 
         // CrateMover9000 can only move 1 crate at a time
-        static void CrateMover9000(int howMany, int from, int to, Stack<char>[] stacks)
+        private static void CrateMover9000(int howMany, int from, int to, Stack<char>[] stacks)
         {
             for (var count = 0; count < howMany; count++)
             {
@@ -57,12 +58,13 @@ namespace Stacking
         }
         
         // CrateMover9001 can move whole stacks at once. 
-        static void CrateMover9001(int howMany, int from, int to, Stack<char>[] stacks)
+        private static void CrateMover9001(int howMany, int from, int to, Stack<char>[] stacks)
         {
             var tmpStack = new Stack<char>();
             
             for (var count = 0; count < howMany; count++)
             {
+                // Just a cheat here.. pushes on a temporary stack so we can re-pop in the right oder. 
                 tmpStack.Push(stacks[from].Pop());
             }
 
@@ -72,9 +74,10 @@ namespace Stacking
             }
         }
 
-        static void ProcessMove(string line, Stack<char>[] stacks, CrateMover crateMover)
+        // Parses the moves and then executes them using whatever CrateMover strategy was provided
+        private static void ProcessMove(string line, Stack<char>[] stacks, CrateMover crateMover)
         {
-            MatchCollection nums = rx.Matches(line);
+            MatchCollection nums = Rx.Matches(line);
             if (nums.Count == 3)
             {
                 var howMany = Int32.Parse(nums[0].Value);
@@ -86,7 +89,7 @@ namespace Stacking
         
         // Recursively reads file so we can push items onto the stacks in the proper order
         // when we unwind the recursive callstack
-        static void InitStacks(StreamReader garbIn, Stack<char>[] stacks)
+        private static void InitStacks(StreamReader garbIn, Stack<char>[] stacks)
         {
             var line = garbIn.ReadLine();
             // Exit condition.. we keep processing until we find a line that doesn't contain a '['
