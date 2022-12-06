@@ -27,17 +27,16 @@ fun processData(dataStream: CharArray, windowSize: Int, problemNum: Int) {
 }
 
 fun findDuplicates(dataStream: CharArray, start: Int, windowSize: Int): Int {
-    val letterMap: HashMap<Char, Int> = HashMap<Char, Int>()
+    val letterMap: HashMap<Char, Int> = hashMapOf()
     var index = start
     do {
         val currentLetter: Char = dataStream[index]
         val dupeFound = letterMap.containsKey(currentLetter)
         // if we find a duplicate we should just skip out and return where the first
         // letter occurred, so we can shift the window past the duplicate letter.
-        if (dupeFound) {
-            return letterMap.get(currentLetter)!!
-        }
-        letterMap.put(currentLetter, index)
+        if (dupeFound)
+            return letterMap[currentLetter]!!
+        letterMap[currentLetter] = index
         index++
     } while (index < start + windowSize)
     return -1 // this indicates we had a clean scan
