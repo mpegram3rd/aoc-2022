@@ -8,6 +8,9 @@ fun main(args: Array<String>) {
     processData(dataStream, 14, 2)
 }
 
+// Process data with a moving window that will slide to the right
+// of the first of any matching characters until it gets the signal that
+// there are no more matching characters.
 fun processData(dataStream: CharArray, windowSize: Int, problemNum: Int) {
     var start = 0
     var found = false
@@ -34,7 +37,7 @@ fun findDuplicates(dataStream: CharArray, start: Int, windowSize: Int): Int {
         val currentLetter: Char = dataStream[index]
         dupeFound = letterMap.containsKey(currentLetter)
         // if we find a duplicate we should just skip out and return where the first
-        // letter occurred so we can shift the window past the duplicate letter.
+        // letter occurred, so we can shift the window past the duplicate letter.
         if (dupeFound) {
             return letterMap.get(currentLetter)!!
         }
