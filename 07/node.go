@@ -77,5 +77,23 @@ func (n *Node) PrettyPrint(padding string) {
 	} else {
 		fmt.Printf("%s%d %s\n", padding, n.size, n.name)
 	}
+}
 
+func (n *Node) FindFreeSpace(spaceNeeded int, smallestSoFar int) *Node {
+	var bestNode *Node
+	if n.isDir {
+		nodeSize := n.TotalSize()
+		if nodeSize >= spaceNeeded && nodeSize <= smallestSoFar {
+			bestNode = n
+			smallestSoFar = nodeSize
+		}
+		for _, child := range n.children {
+			result := child.FindFreeSpace(spaceNeeded, smallestSoFar)
+			if result != nil {
+				bestNode = result
+				smallestSoFar = result.TotalSize()
+			}
+		}
+	}
+	return bestNode
 }

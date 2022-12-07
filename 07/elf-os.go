@@ -7,6 +7,10 @@ import (
 	"os"
 )
 
+const MaxDirSizeProb1 = 100000
+const DriveSize = 70000000
+const FreeSpaceRequired = 30000000
+
 func main() {
 	// open file and check for errors
 	file, err := os.Open("input.txt")
@@ -46,10 +50,14 @@ func main() {
 		}
 		currentNode = handler.Do(line, currentNode)
 	}
+	println("All commands and results processed\n----------------------------\nThe File System looks like this:")
 	root.PrettyPrint("")
 	totalUsed := root.TotalSize()
-	availableDiskSpace := 70000000 - root.TotalSize()
+	availableDiskSpace := DriveSize - root.TotalSize()
 	fmt.Printf("Total disk space used: %d / Available: %d\n", totalUsed, availableDiskSpace)
-	fmt.Printf("Total size with limit %d: %d\n", 100000, root.FindDirsWithinLimit(100000))
-
+	fmt.Printf("Total size with limit %d: %d\n", MaxDirSizeProb1, root.FindDirsWithinLimit(MaxDirSizeProb1))
+	spaceNeeded := FreeSpaceRequired - availableDiskSpace
+	fmt.Printf("We need to free up %d bytes to have the required %d space\n", spaceNeeded, FreeSpaceRequired)
+	node := root.FindFreeSpace(spaceNeeded, totalUsed)
+	fmt.Printf("Best directory to delete is %s of size %d\n", node.GetFullPath(), node.TotalSize())
 }
