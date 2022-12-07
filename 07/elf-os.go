@@ -27,7 +27,7 @@ func main() {
 	garbIn := bufio.NewScanner(file)
 	garbIn.Split(bufio.ScanLines)
 
-	root := NewNode("/", 0)
+	root := NewNode("", 0)
 	currentNode := root
 
 	for garbIn.Scan() {
@@ -46,4 +46,10 @@ func main() {
 		}
 		currentNode = handler.Do(line, currentNode)
 	}
+	root.PrettyPrint("")
+	totalUsed := root.TotalSize()
+	availableDiskSpace := 70000000 - root.TotalSize()
+	fmt.Printf("Total disk space used: %d / Available: %d\n", totalUsed, availableDiskSpace)
+	fmt.Printf("Total size with limit %d: %d\n", 100000, root.FindDirsWithinLimit(100000))
+
 }

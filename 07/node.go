@@ -1,10 +1,12 @@
 package main
 
+import "fmt"
+
 type Node struct {
 	name     string
 	isDir    bool
 	size     int
-	children []Node
+	children []*Node
 	parent   *Node
 }
 
@@ -22,9 +24,19 @@ func (n *Node) TotalSize() int {
 	return totalSize
 }
 
-func (n *Node) AddChild(child *Node) {
+func (n *Node) AddChild(child *Node) *Node {
 	child.parent = n
-	n.children = append(n.children, *child)
+	n.children = append(n.children, child)
+	fmt.Printf("Added file: %s\n", child.GetFullPath())
+	return n
+}
+
+func (n *Node) GetFullPath() string {
+	if n.parent == nil {
+		return n.name
+	}
+	path := n.parent.GetFullPath() + "/" + n.name
+	return path
 }
 
 func (n *Node) GetParent() *Node {
@@ -34,8 +46,36 @@ func (n *Node) GetParent() *Node {
 func (n *Node) FindByName(name string) *Node {
 	for _, child := range n.children {
 		if child.name == name {
-			return &child
+			return child
 		}
 	}
 	return nil
+}
+
+// Wow.... this took FOREVER to sort out.
+func (n *Node) FindDirsWithinLimit(limit int) int {
+	total := 0
+	if n.isDir {
+		nodeSize := n.TotalSize()
+		if nodeSize < limit {
+			total += nodeSize
+		}
+		for _, child := range n.children {
+			total += child.FindDirsWithinLimit(limit)
+		}
+	}
+	return total
+}
+
+func (n *Node) PrettyPrint(padding string) {
+
+	if n.isDir {
+		fmt.Printf("%s/%s %d\n", padding, n.name, n.TotalSize())
+		for _, child := range n.children {
+			child.PrettyPrint(padding + "  ")
+		}
+	} else {
+		fmt.Printf("%s%d %s\n", padding, n.size, n.name)
+	}
+
 }

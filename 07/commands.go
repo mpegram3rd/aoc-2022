@@ -34,8 +34,12 @@ type DirFileCommand struct{}
 
 func (c *DirFileCommand) Do(data string, fileSystem *Node) *Node {
 	parsed := strings.Split(data, " ")
-	child := NewNode(parsed[1], 0)
-	fileSystem.AddChild(child)
+
+	// Only add if it is not already present
+	if fileSystem.FindByName(parsed[1]) == nil {
+		child := NewNode(parsed[1], 0)
+		fileSystem = fileSystem.AddChild(child)
+	}
 	return fileSystem
 }
 
@@ -52,7 +56,7 @@ func (c *FileCommand) Do(data string, fileSystem *Node) *Node {
 		}
 
 		child := NewNode(parsed[1], size)
-		fileSystem.AddChild(child)
+		fileSystem = fileSystem.AddChild(child)
 	}
 	return fileSystem
 }
