@@ -1,0 +1,17 @@
+{
+  "name": "aoc-app",
+  "description": "Advent of Code 2022 - Day 8 - Treetop Tree House",
+  "homepage": "https://adventofcode.com/2022/day/8",
+  "version": "1.0.0",
+  "author": "Macon Pegram",
+  "main": "app.js",
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mpegram3rd/aoc-2022"
+  },
+  "dependencies": {
+  }
+}
