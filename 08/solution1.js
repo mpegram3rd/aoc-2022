@@ -3,6 +3,7 @@ module.exports = (function() {
     this.checkVisibility = (grid) => {
         const visMap = findVisibility(grid);
         let visibleCount = 0;
+        console.log("Visible Tree Map:\n=================");
         visMap.forEach(row => {
             let rowStr = "";
             row.forEach(val => {
@@ -22,7 +23,7 @@ module.exports = (function() {
             for (let x = 0; x < row.length; x++) {
                 visRow.push(isVisible(x, y, grid));
             }
-            visMap.push(visRow)
+            visMap.push(visRow);
         }
         return visMap;
     }
