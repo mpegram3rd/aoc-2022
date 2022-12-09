@@ -11,7 +11,7 @@ public class Solution1 {
     public static void main(String[] args) {
         try {
             BufferedReader garbIn = new BufferedReader(new FileReader("input.txt"));
-            Tracking tracking = new Tracking();
+            Tracking tracking = new Tracking(2); // Problem 1 size = 2, Problem 2 size = 10
             String line = garbIn.readLine();
 
             while (line != null) {

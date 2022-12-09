@@ -4,4 +4,7 @@ public record Point(int x, int y) {
     public String toString() {
         return x + ":" + y;
     }
+
+    @Override
+    public int hashCode() { return toString().hashCode(); }
 }

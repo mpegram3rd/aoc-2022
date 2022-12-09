@@ -3,29 +3,39 @@ import java.util.Set;
 
 public class Tracking {
 
-    private Point head;
-    private Point prior;
-    private Point tail;
-
+    private int bodySize = 1;
     private Set<Point> tailPositions;
 
-    public Tracking() {
-        head = new Point(0,0);
-        prior = new Point(0,0);
-        tail = new Point(0,0);
+    private Point[] body;
+
+    public Tracking(int bodySize) {
+        // Build the body
+        this.bodySize = bodySize;
+        body = new Point[bodySize];
+        for (int index = 0; index < bodySize; index++) {
+            body[index] = new Point(0,0);
+        }
+
         tailPositions = new HashSet<>();
-        tailPositions.add(tail);
+        tailPositions.add(getTail());
     }
 
 
     public void makeAMove(MovementFunction mover) {
-        prior = head;
-        head = mover.move(head);
-        if (calcDistance(head, tail) >= 2.0) {
-            tail = new Point(prior.x(), prior.y());
-            tailPositions.add(tail);
+        Point prior = body[0];
+        body[0] = mover.move(body[0]);
+        for (int index = 1; index < body.length; index++) {
+            if (calcDistance(body[index-1], body[index]) >= 2.0) {
+                Point tmp = body[index];
+                body[index] = new Point(prior.x(), prior.y());
+                if (index == body.length - 1) {
+                    System.out.println("!!! Moved Tail !!! " + tmp + "->" + body[index]);
+                }
+                prior = tmp;
+            }
         }
-    }
+        tailPositions.add(getTail());
+}
 
     private double calcDistance(Point head, Point tail) {
         double xDistance = head.x() - tail.x();
@@ -38,4 +48,7 @@ public class Tracking {
         return tailPositions;
     }
 
+    public Point getTail() {
+        return body[bodySize - 1];
+    }
 }
