@@ -21,6 +21,10 @@ public class Tracking {
     }
 
 
+    // Notes:
+    // If in same row or column and preceding segment then just needs to
+    // move 1 in the direction (left or right)
+    // If it is in neither the same row or column then must move diaganol
     public void makeAMove(MovementFunction mover) {
         Point prior = body[0];
         body[0] = mover.move(body[0]);
@@ -29,11 +33,13 @@ public class Tracking {
                 Point tmp = body[index];
                 body[index] = new Point(prior.x(), prior.y());
                 if (index == body.length - 1) {
-                    System.out.println("!!! Moved Tail !!! " + tmp + "->" + body[index]);
+                    System.out.println("Head is at " + body[0] + " !!! Moved Tail !!! " + tmp + "->" + body[index]);
                 }
                 prior = tmp;
             }
         }
+        writeGrid();
+        System.out.println("------------");
         tailPositions.add(getTail());
 }
 
@@ -51,4 +57,35 @@ public class Tracking {
     public Point getTail() {
         return body[bodySize - 1];
     }
+
+    public Point getHead() {
+        return body[0];
+    }
+
+    public Point[] getBody() {
+        return body;
+    }
+
+    private void writeGrid() {
+        char[][] grid = new char[6][6];
+        for (int y = grid.length - 1; y >= 0; y--) {
+            for (int x = 0; x < grid[y].length; x++) {
+                grid[y][x] = '.';
+            }
+        }
+        int count = 0;
+        for (Point point : getBody()) {
+            if (grid[point.y()][point.x()] == '.') {
+                grid[point.y()][point.x()] = (char) ('0' + count);
+            }
+            count++;
+        }
+        for (int y = grid.length - 1; y >= 0; y--) {
+            for (int x = 0; x < grid[y].length; x++) {
+                System.out.print(grid[y][x]);
+            }
+            System.out.println();
+        }
+    }
+
 }
