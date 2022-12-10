@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class Solution1 {
+public class Solution {
     private static final MovementFunction left = (Point p) -> new Point(p.x()-1, p.y());
     private static final MovementFunction right = (Point p) -> new Point(p.x()+1, p.y());
     private static final MovementFunction up = (Point p) -> new Point(p.x(), p.y()+1);
@@ -10,14 +10,13 @@ public class Solution1 {
 
     public static void main(String[] args) {
         try {
-            BufferedReader garbIn = new BufferedReader(new FileReader("example-input.txt"));
+            BufferedReader garbIn = new BufferedReader(new FileReader("input.txt"));
             Tracking tracking = new Tracking(10); // Problem 1 size = 2, Problem 2 size = 10
             String line = garbIn.readLine();
 
             while (line != null) {
-                System.out.println("Processing: " + line + " Head is at " + tracking.getHead());
+                System.out.println("Processing: " + line);
                 tracking = processMove(tracking, line);
-//                writeGrid(tracking);
                 line = garbIn.readLine();
             }
             garbIn.close();
@@ -25,28 +24,6 @@ public class Solution1 {
         }
         catch (IOException ex) {
             ex.printStackTrace();
-        }
-    }
-
-    private static void writeGrid(Tracking tracker) {
-        char[][] grid = new char[30][30];
-        for (int y = grid.length - 1; y > 0; y--) {
-            for (int x = 0; x < grid[y].length; x++) {
-                grid[y][x] = '.';
-            }
-        }
-        int count = 0;
-        for (Point point : tracker.getBody()) {
-            if (grid[point.y()][point.x()] == '.') {
-                grid[point.y()][point.x()] = (char) ('0' + count);
-            }
-            count++;
-        }
-        for (int y = grid.length - 1; y > 0; y--) {
-            for (int x = 0; x < grid[y].length; x++) {
-                System.out.print(grid[y][x]);
-            }
-            System.out.println();
         }
     }
 
