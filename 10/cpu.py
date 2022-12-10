@@ -1,9 +1,19 @@
 import re
 
+
 class CPU:
 
     # Setup CPU with initial X Register value
     def __init__(self, _x_register, _breakpoints):
+
+        # Build a CRT with all the pixels off represented by '.'
+        self._crt = []
+        for row in range(0,6):
+            row_vals = []
+            for col in range(0,40):
+                row_vals.append('.')
+            self._crt.append(row_vals)
+
         self._x = _x_register
         self._breakpoints = _breakpoints
         self._breakpoint_values = {}
@@ -36,10 +46,24 @@ class CPU:
     # Simulates the CPU cycle and captures the current values if a breakpoint is crossed
     def __tick(self, count):
         if count > 0:
+            self.__update_crt()
             self._current_cycle += 1
             if self._current_cycle in self._breakpoints:
                 self._breakpoint_values[self._current_cycle] = self.read_x_register()
-            self.__tick(count -1)
+            self.__tick(count - 1)
+
+    def __update_crt(self):
+        # 40 pixels per row, do int division
+        row = self._current_cycle // 40
+        # remainder is the column to render
+        col = self._current_cycle % 40
+
+        # Pixels are 3 wide based off value of the x register
+        pixel_range = range(self._x - 1, self._x + 2, 1)
+
+        # so if the scanline is within the pixel range it should be rendered
+        # as a '#' otherwise render a '.'
+        self._crt[row][col] = '#' if col in pixel_range else '.'
 
     # Run a command on the CPU
     def execute(self, _line):
@@ -48,3 +72,11 @@ class CPU:
 
         # Lookup the handler for the instruction and pass in the instruction details
         self._handlers[instruction[0]](instruction)
+
+    def render_screen(self):
+        print("Screen output")
+        for y in self._crt:
+            line = ''
+            for x in y:
+                line += x
+            print(line)

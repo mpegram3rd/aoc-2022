@@ -20,3 +20,6 @@ for value in breakpoint_values:
     total += (value * breakpoint_values[value])
 
 print("Sum of values at each breakpoint = %d" % total)
+print()
+
+computer.render_screen()
