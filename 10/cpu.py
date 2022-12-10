@@ -74,7 +74,7 @@ class CPU:
         self._handlers[instruction[0]](instruction)
 
     def render_screen(self):
-        print("Screen output")
+        print("Screen output:")
         for y in self._crt:
             line = ''
             for x in y:
