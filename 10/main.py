@@ -7,6 +7,7 @@ computer = cpu.CPU(1, (20, 60, 100, 140, 180, 220))
 for line in Lines:
     computer.execute(line)
 
+print("\nBreakpoint Analysis")
 print("Value of X Register at cycle %d: %d" % (computer.get_current_cycle(), computer.read_x_register()))
 
 sum = 0

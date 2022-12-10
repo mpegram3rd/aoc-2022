@@ -1,6 +1,5 @@
 import re
 
-
 class CPU:
 
     # Setup CPU with initial X Register value
