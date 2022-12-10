@@ -2,7 +2,6 @@ import re
 
 
 class CPU:
-
     # Setup CPU with initial X Register value
     def __init__(self, _x_register, _breakpoints):
 
