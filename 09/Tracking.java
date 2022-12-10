@@ -52,7 +52,7 @@ public class Tracking {
         return body[bodySize - 1];
     }
 
-    public Point getHead() {
-        return body[0];
+    public int getBodySize() {
+        return bodySize;
     }
 }

@@ -11,16 +11,21 @@ public class Solution {
     public static void main(String[] args) {
         try {
             BufferedReader garbIn = new BufferedReader(new FileReader("input.txt"));
-            Tracking tracking = new Tracking(10); // Problem 1 size = 2, Problem 2 size = 10
+            Tracking tracking1 = new Tracking(2);
+            Tracking tracking2 = new Tracking(10);
             String line = garbIn.readLine();
 
             while (line != null) {
                 System.out.println("Processing: " + line);
-                tracking = processMove(tracking, line);
+                tracking1 = processMove(tracking1, line);
+                tracking2 = processMove(tracking2, line);
                 line = garbIn.readLine();
             }
             garbIn.close();
-            System.out.println("Total Unique Positions for Tail: "+ tracking.getTailPositions().size());
+            System.out.println("Problem 1: Total Unique Positions for Tail (length=" + tracking1.getBodySize() + "): "
+                    + tracking1.getTailPositions().size());
+            System.out.println("Problem 2: Total Unique Positions for Tail (length=" + tracking1.getBodySize() + "): "
+                    + tracking2.getTailPositions().size());
         }
         catch (IOException ex) {
             ex.printStackTrace();
