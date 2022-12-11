@@ -1,102 +1,90 @@
 ﻿using System.Collections.Specialized;
-using System.Diagnostics;
-using MonkeyToss;
 
 namespace MonkeyToss
 {
-    class Program
+    public static class Program
     {
+        
         public static void Main(string[] args)
         {
-            RunSolution();
+            RunSolution(20);
+            RunSolution(10000);
         }
 
-        private static void RunSolution()
+        private static void RunSolution(int iterations)
         {
             var garbIn = new StreamReader(new FileStream(@"input.txt", FileMode.Open, FileAccess.Read));
+            
+            // Accumulator for Least Common Multiple used in part 2. 
+            var lcm = 1ul;
 
-            var line = String.Empty;
             var monkeys = new OrderedDictionary();
             do
             {
                 var monkey = ParseMonkey(garbIn);
-                if (monkey != null)
-                {
-                    monkeys.Add(monkey.Id, monkey);
-                }
+                monkeys.Add(monkey.Id, monkey);
+                lcm *= monkey.DivBy;
 
                 garbIn.ReadLine(); // Each monkey definition is followed by an empty line.
             } while (!garbIn.EndOfStream);
 
             garbIn.Close();
 
-            for (var count = 0; count < 20; count++)
+            // There's a different stress management strategy for problem 1 and 2. 
+            // Figure out which delegate to apply based on the number of iterations. 
+            Monkey.StressManagement stressManagement = iterations > 20
+                ? (lvl => lvl % lcm)
+                : (lvl => lvl / 3);
+            
+            for (var count = 0; count < iterations; count++)
             {
                 foreach (Monkey monkey in monkeys.Values)
                 {
-                    var tosses = monkey.InspectItems();
+                    var tosses = monkey.InspectItems(stressManagement);
                     foreach (var toss in tosses)
                     {
-                        ((Monkey)monkeys[toss.TargetMonkey]).Items.Add(toss.WorryLevel);
+                        ((Monkey)monkeys[toss.TargetMonkey]!).Items.Add(toss.WorryLevel);
                     }
                 }
+
             }
 
-            List<Monkey> busyMonkeys = monkeys.Values.OfType<Monkey>().OrderByDescending(m => m.InspectCount).ToList();
+            // Order so we can extract the busiest 2 monkeys
+            var busyMonkeys = monkeys.Values
+                        .OfType<Monkey>()
+                        .OrderByDescending(m => m.InspectCount).ToList();
+            
+            // Calculate and report the amount of monkey business.
             var monkeyBusiness = busyMonkeys[0].InspectCount * busyMonkeys[1].InspectCount;
             Console.WriteLine("Total Monkey Business: " + monkeyBusiness);
         }
 
-        // Ugly as sin parser
+        // Ugly as sin parser.  Very very non-resilient
         private static Monkey ParseMonkey(StreamReader garbIn)
         {
             // Parse string format "Monkey XX:"
-            var idStr = garbIn.ReadLine()?.Substring("Monkey ".Length);
-            var id = Int32.Parse(idStr?.Substring(0, idStr.Length - 1) ?? "0");
+            var idStr = garbIn.ReadLine()?["Monkey ".Length..];
+            var id = int.Parse(idStr?[..^1] ?? "0");
             
             // Parse Items format "  Starting items: XX, YY, ZZ
-            var itemsStr = garbIn.ReadLine()?.Substring("  Starting items: ".Length);
+            var itemsStr = garbIn.ReadLine()?["  Starting items: ".Length..];
             var itemsArray = itemsStr?.Split(',', StringSplitOptions.TrimEntries);
-            var items = new List<int>();
-            foreach (var item in itemsArray!)
-                items.Add(Int32.Parse(item));
-            
+            var items = itemsArray!.Select(ulong.Parse).ToList();
+
             // Parse Formula format "  Operation: new = x + y"
-            var formula = garbIn.ReadLine()?.Substring("  Operation: new = ".Length);
+            var formula = garbIn.ReadLine()?["  Operation: new = ".Length..];
             
             // Parse "  Test: divisible by XX"
-            var divByStr = garbIn.ReadLine()?.Substring("  Test: divisible by ".Length);
-            var divBy = Int32.Parse(divByStr ?? "-1");
+            var divByStr = garbIn.ReadLine()?["  Test: divisible by ".Length..];
+            var divBy = ulong.Parse(divByStr ?? "-1");
             
             // Parse if true/if false format "    If <condition>: throw to monkey XX"
-            var targetStr = garbIn.ReadLine()?.Substring("    If true: throw to monkey ".Length);
-            var trueTarget = Int32.Parse(targetStr ?? "-1");
-            targetStr = garbIn.ReadLine()?.Substring("    If false: throw to monkey ".Length);
-            var falseTarget = Int32.Parse(targetStr ?? "-1");
+            var targetStr = garbIn.ReadLine()?["    If true: throw to monkey ".Length..];
+            var trueTarget = int.Parse(targetStr ?? "-1");
+            targetStr = garbIn.ReadLine()?["    If false: throw to monkey ".Length..];
+            var falseTarget = int.Parse(targetStr ?? "-1");
 
             return new Monkey(id, items, formula!, divBy, trueTarget, falseTarget);
         }
     }
 }
-/*
- * Monkey 0:
-    Starting items: 63, 84, 80, 83, 84, 53, 88, 72
-    Operation: new = old * 11
-    Test: divisible by 13
-      If true: throw to monkey 4
-      If false: throw to monkey 7
-      
-      
-   After each monkey inspects an item but before it tests your worry level, your relief that 
-   the monkey's inspection didn't damage the item causes your worry level to be divided by 
-   three and rounded down to the nearest integer.
-   
-   On a single monkey's turn, it inspects and throws all of the items it is holding one at 
-   a time and in the order listed.
-   
-   When a monkey throws an item to another monkey, the item goes on the end of the recipient monkey's list.
-   
-   Count the total number of times each monkey inspects items over 20 rounds:
-   
-   Find 2 most active monkeys and multiply the number of inspections of the top 2 most active.
- */
